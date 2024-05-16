@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:19:04 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 22:29:28 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 22:57:21 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ void	message(t_state state, int timestamp, int philo);
 //philosophers.c
 void	philosophers(t_data *data);
 void	*routine(void *philo);
+void	monitor_philos(t_data *data);
 
 #endif

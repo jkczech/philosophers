@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:21:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 22:29:16 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 22:57:11 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,22 @@ void	philosophers(t_data *data)
 	i = 0;
 	while (i < data->num_of_philo)
 	{
-		pthread_create(&data->philo[i].philo_thread, NULL, &routine, &data->philo[i]);
+		if (pthread_create(&data->philo[i].philo_thread, NULL, &routine, &data->philo[i]))
+		{
+			write(2, "Error: thread creation failed\n", 31);
+			return ;
+		}
 		i++;
 	}
+	monitor_philos(data);
 	i = 0;
 	while (i < data->num_of_philo)
 	{
-		pthread_join(data->philo[i].philo_thread, NULL);
+		if (pthread_join(data->philo[i].philo_thread, NULL))
+		{
+			write(2, "Error: thread join failed\n", 27);
+			return ;
+		}
 		i++;
 	}
 }
@@ -43,5 +52,16 @@ void	*routine(void *philo)
 		usleep(1000);
 	}
 	return (NULL);
+}
+
+void	monitor_philos(t_data *data)
+{
+	while (1)
+	{
+		pthread_mutex_lock(&data->dying);
+		if (data->dead)
+			break ;
+		pthread_mutex_unlock(&data->dying);
+	}
 }
 

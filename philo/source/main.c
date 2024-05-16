@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:00:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 22:30:35 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 22:51:43 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 		return (1);
 	if (!init_data(&data, argc, argv) || !init_philos(&data))
 		return (1);
-	//philosophers(&data);
+	philosophers(&data);
 	free_data(&data);
 	return (0);
 }
