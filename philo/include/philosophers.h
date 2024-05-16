@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:19:04 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 23:29:27 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 23:37:47 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_data
 	bool			dead;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	writing;
-	pthread_mutex_t eating;
+	pthread_mutex_t	eating;
 	pthread_mutex_t	dying;
 }	t_data;
 

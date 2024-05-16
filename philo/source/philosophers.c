@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:21:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 23:26:47 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 23:37:55 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	philosophers(t_data *data)
 	i = 0;
 	while (i < data->num_of_philo)
 	{
-		if (pthread_create(&data->philo[i].philo_thread, NULL, &routine, &data->philo[i]))
+		if (pthread_create(&data->philo[i].philo_thread,
+				NULL, &routine, &data->philo[i]))
 		{
 			write(2, "Error: thread creation failed\n", 31);
 			return ;
@@ -49,6 +50,7 @@ void	*routine(void *philo_pass)
 	{
 		take_forks(philo);
 		eating(philo);
+		return_forks(philo);
 		sleeping(philo);
 		thinking(philo);
 	}
@@ -65,4 +67,3 @@ void	monitor_philos(t_data *data)
 		pthread_mutex_unlock(&data->dying);
 	}
 }
-

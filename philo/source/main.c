@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:00:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 22:51:43 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 23:37:35 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	init_data(t_data *data, int argc, char **argv)
 	return (true);
 }
 
-int		philo_time(void)
+int	philo_time(void)
 {
 	struct timeval	time;
 
@@ -58,7 +58,7 @@ int		philo_time(void)
 bool	init_philos(t_data *data)
 {
 	int	i;
-	
+
 	data->philo = malloc(sizeof(t_philo) * data->num_of_philo);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philo);
 	if (!data->philo || !data->forks)
@@ -82,8 +82,8 @@ bool	init_philos(t_data *data)
 
 void	free_data(t_data *data)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (i < data->num_of_philo)
 	{
