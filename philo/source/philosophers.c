@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:21:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 22:57:11 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 23:26:47 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,18 @@ void	philosophers(t_data *data)
 	}
 }
 
-void	*routine(void *philo)
+void	*routine(void *philo_pass)
 {
-	t_philo	*philo_data;
+	t_philo	*philo;
 
-	philo_data = (t_philo *)philo;
-	while (1)
+	philo = (t_philo *)philo_pass;
+	philo->last_meal = philo_time();
+	while (!everyone_alive(philo) && !everyone_ate(philo))
 	{
-		pthread_mutex_lock(&philo_data->mutex);
-		message(THINKING, philo_data->data->begin_time, philo_data->id);
-		pthread_mutex_unlock(&philo_data->mutex);
-		usleep(1000);
+		take_forks(philo);
+		eating(philo);
+		sleeping(philo);
+		thinking(philo);
 	}
 	return (NULL);
 }

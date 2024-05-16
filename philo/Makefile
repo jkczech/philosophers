@@ -6,7 +6,7 @@
 #    By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/16 21:42:05 by jkoupy            #+#    #+#              #
-#    Updated: 2024/05/16 22:25:53 by jkoupy           ###   ########.fr        #
+#    Updated: 2024/05/16 23:28:58 by jkoupy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,14 @@ NAME = philo
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -pthread #-fsanitize=thread
-DEPFLAGS =-MT $@ -MMD -MP -MF $(OBJ_DIR)/$*.d
 RM = rm -rf
 
 SRCS =	checker.c \
 		libft.c \
 		main.c \
 		messages.c \
-		philosophers.c
+		philosophers.c \
+		tasks.c
 
 OBJ_DIR = object/
 OBJS =  $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))

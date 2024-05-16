@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:28:51 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 21:46:18 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 23:30:34 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,37 @@ bool	non_negative(int argc, char **argv)
 			return (false);
 		i++;
 	}
+	return (true);
+}
+
+bool	everyone_alive(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_lock(&philo->data->dying);
+	while (i < philo->data->num_of_philo)
+	{
+		if (philo->data->philo[i].state == DIED)
+			return (true);
+		i++;
+	}
+	pthread_mutex_unlock(&philo->data->dying);
+	return (false);
+}
+
+bool	everyone_ate(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	pthread_mutex_lock(&philo->data->eating);
+	while (i < philo->data->num_of_philo)
+	{
+		if (philo->data->philo[i].meal_count < philo->data->must_eat)
+			return (false);
+		i++;
+	}
+	pthread_mutex_unlock(&philo->data->eating);
 	return (true);
 }

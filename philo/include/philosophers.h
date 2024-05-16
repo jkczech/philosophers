@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:19:04 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 22:57:21 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 23:29:27 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,23 @@ typedef struct s_data
 	pthread_mutex_t	dying;
 }	t_data;
 
+//checker.c
+bool	check_args(int argc, char **argv);
+bool	all_digit(int argc, char **argv);
+bool	non_negative(int argc, char **argv);
+bool	everyone_alive(t_philo *philo);
+bool	everyone_ate(t_philo *philo);
+
+//libft.c
+int		ft_atoi(const char *nptr);
+bool	ft_isdigit(int c);
+
 //main.c
 int		main(int argc, char **argv);
 bool	init_data(t_data *data, int argc, char **argv);
 int		philo_time(void);
 bool	init_philos(t_data *data);
 void	free_data(t_data *data);
-
-//checker.c
-bool	check_args(int argc, char **argv);
-bool	all_digit(int argc, char **argv);
-bool	non_negative(int argc, char **argv);
-
-//libft.c
-int		ft_atoi(const char *nptr);
-bool	ft_isdigit(int c);
 
 //messages.c
 void	message(t_state state, int timestamp, int philo);
@@ -90,5 +92,11 @@ void	message(t_state state, int timestamp, int philo);
 void	philosophers(t_data *data);
 void	*routine(void *philo);
 void	monitor_philos(t_data *data);
+
+//tasks.c
+void	take_forks(t_philo *philo);
+void	eating(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	thinking(t_philo *philo);
 
 #endif
