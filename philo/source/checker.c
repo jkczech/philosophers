@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:28:51 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 21:39:21 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 21:46:18 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,28 +16,28 @@ bool	check_args(int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
 	{
-		write(1, "Error: wrong number of arguments\n", 34);
+		write(2, "Error: wrong number of arguments\n", 34);
 		return (false);
 	}
 	if (!all_digit(argc, argv))
 	{
-		write(1, "Error: arguments must be numbers\n", 34);
+		write(2, "Error: arguments must be numbers\n", 34);
 		return (false);
 	}
 	if (!non_negative(argc, argv))
 	{
-		write(1, "Error: arguments must be positive and not zero\n", 48);
+		write(2, "Error: arguments must be positive and not zero\n", 48);
 		return (false);
 	}
 	if (ft_atoi(argv[1]) > 200)
 	{
-		write(1, "Error: too many philosophers, sorry\n", 37);
+		write(2, "Error: too many philosophers, sorry\n", 37);
 		return (false);
 	}
 	return (true);
 }
 
-bool	no_alpha(int argc, char **argv)
+bool	all_digit(int argc, char **argv)
 {
 	int	i;
 	int	j;

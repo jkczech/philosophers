@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:19:04 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 21:41:16 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/16 22:29:28 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,33 +40,44 @@ typedef enum e_state
 
 typedef struct s_philo
 {
+	pthread_t		philo_thread;
 	int				id;
-	int				num_of_times_eat;
+	int				meal_count;
 	int				last_meal;
 	t_state			state;
 	pthread_mutex_t	mutex;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	struct s_data	*data;
 }	t_philo;
 
 typedef struct s_data
 {
+	t_philo			*philo;
 	int				num_of_philo;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				num_of_times_must_eat;
-	t_philo			*philo;
+	int				must_eat;
 	int				begin_time;
-	int				*is_dead;
+	bool			dead;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	writing;
+	pthread_mutex_t eating;
+	pthread_mutex_t	dying;
 }	t_data;
 
 //main.c
-int		main(int argc, char argv);
+int		main(int argc, char **argv);
+bool	init_data(t_data *data, int argc, char **argv);
+int		philo_time(void);
+bool	init_philos(t_data *data);
+void	free_data(t_data *data);
 
 //checker.c
 bool	check_args(int argc, char **argv);
+bool	all_digit(int argc, char **argv);
+bool	non_negative(int argc, char **argv);
 
 //libft.c
 int		ft_atoi(const char *nptr);
@@ -74,5 +85,9 @@ bool	ft_isdigit(int c);
 
 //messages.c
 void	message(t_state state, int timestamp, int philo);
+
+//philosophers.c
+void	philosophers(t_data *data);
+void	*routine(void *philo);
 
 #endif
