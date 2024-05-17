@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:19:04 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/17 18:00:21 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 23:39:14 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef struct s_philo
 {
 	pthread_t		philo_thread;
 	int				id;
-	int				meal_count;
 	int				last_meal;
+	int				meal_count;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	struct s_data	*data;
@@ -80,19 +80,21 @@ bool	ft_isdigit(int c);
 //main.c
 int		main(int argc, char **argv);
 bool	init_data(t_data *data, int argc, char **argv);
-int		philo_time(void);
 bool	init_philos(t_data *data);
 void	free_data(t_data *data);
 
 //messages.c
-void	message(t_data, t_state state, int timestamp, int philo);
+void	message(t_philo *philo, t_state state, int timestamp);
+bool	is_dead(t_data *data);
+
+//monitoring.c
+void	monitor_philos(t_data *data);
+bool	dying(t_data *data, int i);
 
 //philosophers.c
 void	philosophers(t_data *data);
-void	*routine(void *philo);
-void	lonely_philo(t_philo *philo);
-void	monitor_philos(t_data *data);
-void	ft_usleep(t_philo *philo, int time);
+void	*routine(void *philo_pass);
+void	*lonely_philo(t_philo *philo);
 void	*finished_eating(t_data *data);
 
 //tasks.c
@@ -102,4 +104,8 @@ void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);
 
+//time.c
+int		philo_time(void);
+void	ft_usleep(t_philo *philo, int time);
+int		time_shift(t_philo *philo);
 #endif

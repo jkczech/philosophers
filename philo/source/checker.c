@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:28:51 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/17 20:58:43 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 22:24:01 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,14 @@ bool	someone_is_dead(t_philo *philo)
 
 bool	ate_too_much(t_philo *philo)
 {
-	/* int	i;
-
-	i = 0; */
 	if (philo->data->max_eat == -1)
 		return (false);
 	pthread_mutex_lock(&philo->data->eating);
-	//while (i < philo->data->num_of_philo)
-	//{
-		if (philo->meal_count >= philo->data->max_eat)
-		{
-			//printf("Philosopher %d has eaten enough\n", philo->id);
-			pthread_mutex_unlock(&philo->data->eating);
-			return (true);
-		}
-		//i++;
-	//}
+	if (philo->meal_count >= philo->data->max_eat)
+	{
+		pthread_mutex_unlock(&philo->data->eating);
+		return (true);
+	}
 	pthread_mutex_unlock(&philo->data->eating);
 	return (false);
 }

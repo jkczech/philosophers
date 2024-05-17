@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:00:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/17 17:58:59 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 23:32:50 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,6 @@ bool	init_data(t_data *data, int argc, char **argv)
 		return (false);
 	}
 	return (true);
-}
-
-int	philo_time(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
 bool	init_philos(t_data *data)

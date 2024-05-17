@@ -6,7 +6,7 @@
 #    By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/16 21:42:05 by jkoupy            #+#    #+#              #
-#    Updated: 2024/05/17 20:45:28 by jkoupy           ###   ########.fr        #
+#    Updated: 2024/05/17 23:39:01 by jkoupy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,10 @@ SRCS =	checker.c \
 		libft.c \
 		main.c \
 		messages.c \
+		monitoring.c \
 		philosophers.c \
-		tasks.c
+		tasks.c \
+		time.c
 
 OBJ_DIR = object/
 OBJS =  $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
