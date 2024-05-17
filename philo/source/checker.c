@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:28:51 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 23:36:46 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 19:30:27 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,34 +71,38 @@ bool	non_negative(int argc, char **argv)
 	return (true);
 }
 
-bool	everyone_alive(t_philo *philo)
+bool	someone_is_dead(t_philo *philo)
 {
 	int	i;
 
 	i = 0;
 	pthread_mutex_lock(&philo->data->dying);
-	while (i < philo->data->num_of_philo)
+	if (philo->data->dead)
 	{
-		if (philo->data->philo[i].state == DIED)
-			return (true);
-		i++;
+		pthread_mutex_unlock(&philo->data->dying);
+		return (true);
 	}
 	pthread_mutex_unlock(&philo->data->dying);
 	return (false);
 }
 
-bool	everyone_ate(t_philo *philo)
+bool	ate_too_much(t_philo *philo)
 {
 	int	i;
 
 	i = 0;
+	if (philo->data->max_eat == -1)
+		return (false);
 	pthread_mutex_lock(&philo->data->eating);
 	while (i < philo->data->num_of_philo)
 	{
-		if (philo->data->philo[i].meal_count < philo->data->must_eat)
-			return (false);
+		if (philo->data->philo[i].meal_count >= philo->data->max_eat)
+		{
+			pthread_mutex_unlock(&philo->data->eating);
+			return (true);
+		}
 		i++;
 	}
 	pthread_mutex_unlock(&philo->data->eating);
-	return (true);
+	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:00:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 23:37:35 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 17:58:59 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,25 @@ bool	init_data(t_data *data, int argc, char **argv)
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
-	data->must_eat = -1;
+	data->max_eat = -1;
 	if (argc == 6)
-		data->must_eat = ft_atoi(argv[5]);
+		data->max_eat = ft_atoi(argv[5]);
+	data->finished = 0;
 	data->dead = false;
 	data->begin_time = philo_time();
-	pthread_mutex_init(&data->writing, NULL);
-	pthread_mutex_init(&data->eating, NULL);
-	pthread_mutex_init(&data->dying, NULL);
+	if (pthread_mutex_init(&data->writing, NULL))
+		return (false);
+	if (pthread_mutex_init(&data->eating, NULL))
+	{
+		pthread_mutex_destroy(&data->writing);
+		return (false);
+	}
+	if (pthread_mutex_init(&data->dying, NULL))
+	{
+		pthread_mutex_destroy(&data->writing);
+		pthread_mutex_destroy(&data->eating);
+		return (false);
+	}
 	return (true);
 }
 
@@ -69,9 +80,7 @@ bool	init_philos(t_data *data)
 		data->philo[i].id = i + 1;
 		data->philo[i].meal_count = 0;
 		data->philo[i].last_meal = philo_time();
-		data->philo[i].state = THINKING;
 		data->philo[i].data = data;
-		pthread_mutex_init(&data->philo[i].mutex, NULL);
 		data->philo[i].left_fork = &data->forks[i];
 		data->philo[i].right_fork = &data->forks[(i + 1) % data->num_of_philo];
 		pthread_mutex_init(&data->forks[i], NULL);
@@ -87,7 +96,7 @@ void	free_data(t_data *data)
 	i = 0;
 	while (i < data->num_of_philo)
 	{
-		pthread_mutex_destroy(&data->philo[i].mutex);
+		pthread_mutex_destroy(&data->forks[i]);
 		i++;
 	}
 	free(data->forks);

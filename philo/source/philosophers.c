@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:21:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 23:37:55 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 19:51:26 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,89 @@ void	*routine(void *philo_pass)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_pass;
+	pthread_mutex_lock(&philo->data->eating);
 	philo->last_meal = philo_time();
-	while (!everyone_alive(philo) && !everyone_ate(philo))
+	pthread_mutex_unlock(&philo->data->eating);
+	if (philo->data->num_of_philo == 1)
 	{
-		take_forks(philo);
+		lonely_philo(philo);
+		return (NULL);
+	}
+	if (philo->id % 2)
+	{
+		thinking(philo);
+		usleep(100);
+	}
+	while (!someone_is_dead(philo) && !ate_too_much(philo))
+	{
 		eating(philo);
-		return_forks(philo);
+		if (ate_too_much(philo))
+			break ;
 		sleeping(philo);
 		thinking(philo);
 	}
-	return (NULL);
+	return (finished_eating(philo->data));
+}
+
+void	ft_usleep(t_philo *philo, int time)
+{
+	int	begin;
+
+	begin = philo_time();
+	while (philo_time() - begin < time)
+	{
+		if (someone_is_dead(philo) || ate_too_much(philo))
+			return ;
+		usleep(100);
+	}
+}
+
+void	lonely_philo(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	message(*philo->data, FORK, philo_time() - philo->data->begin_time,
+		philo->id);
+	pthread_mutex_unlock(philo->left_fork);
+	ft_usleep(philo, philo->data->time_to_die);
 }
 
 void	monitor_philos(t_data *data)
 {
+	int	i;
+
 	while (1)
 	{
-		pthread_mutex_lock(&data->dying);
-		if (data->dead)
-			break ;
-		pthread_mutex_unlock(&data->dying);
+		i = 0;
+		while (i < data->num_of_philo)
+		{
+			pthread_mutex_lock(&data->philo[i].data->eating);
+			if (data->finished == data->num_of_philo)
+			{
+				//printf("All philosophers have eaten enough\n");
+				pthread_mutex_unlock(&data->philo[i].data->eating);
+				return ;
+			}
+			if (philo_time() - data->philo[i].last_meal > data->time_to_die)
+			{
+				message(*data, DIED, philo_time() - data->begin_time,
+					data->philo[i].id);
+				pthread_mutex_lock(&data->philo[i].data->dying);
+				data->dead = true;
+				pthread_mutex_unlock(&data->philo[i].data->dying);
+				pthread_mutex_unlock(&data->philo[i].data->eating);
+				return ;
+			}
+			pthread_mutex_unlock(&data->philo[i].data->eating);
+			usleep(150);
+			i++;
+		}
 	}
+}
+
+void	*finished_eating(t_data *data)
+{
+	pthread_mutex_lock(&data->eating);
+	data->finished++;
+	pthread_mutex_unlock(&data->eating);
+	return (NULL);
 }
