@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:37:45 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/17 19:30:03 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 20:04:11 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	message(t_data data, t_state state, int timestamp, int philo)
 {
 	pthread_mutex_lock(&data.dying);
-	if (data.dead && state != DIED)
+	if (data.dead)
 	{
 		pthread_mutex_unlock(&data.dying);
 		return ;

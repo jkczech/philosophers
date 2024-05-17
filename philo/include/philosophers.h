@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:19:04 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/16 23:37:47 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 18:00:21 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ typedef struct s_philo
 	int				id;
 	int				meal_count;
 	int				last_meal;
-	t_state			state;
-	pthread_mutex_t	mutex;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	struct s_data	*data;
@@ -58,7 +56,8 @@ typedef struct s_data
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
-	int				must_eat;
+	int				max_eat;
+	int				finished;
 	int				begin_time;
 	bool			dead;
 	pthread_mutex_t	*forks;
@@ -71,8 +70,8 @@ typedef struct s_data
 bool	check_args(int argc, char **argv);
 bool	all_digit(int argc, char **argv);
 bool	non_negative(int argc, char **argv);
-bool	everyone_alive(t_philo *philo);
-bool	everyone_ate(t_philo *philo);
+bool	someone_is_dead(t_philo *philo);
+bool	ate_too_much(t_philo *philo);
 
 //libft.c
 int		ft_atoi(const char *nptr);
@@ -86,15 +85,19 @@ bool	init_philos(t_data *data);
 void	free_data(t_data *data);
 
 //messages.c
-void	message(t_state state, int timestamp, int philo);
+void	message(t_data, t_state state, int timestamp, int philo);
 
 //philosophers.c
 void	philosophers(t_data *data);
 void	*routine(void *philo);
+void	lonely_philo(t_philo *philo);
 void	monitor_philos(t_data *data);
+void	ft_usleep(t_philo *philo, int time);
+void	*finished_eating(t_data *data);
 
 //tasks.c
 void	take_forks(t_philo *philo);
+void	return_forks(t_philo *philo);
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);

@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:21:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/17 19:51:26 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/17 21:00:35 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,8 @@ void	*routine(void *philo_pass)
 		lonely_philo(philo);
 		return (NULL);
 	}
-	if (philo->id % 2)
-	{
-		thinking(philo);
-		usleep(100);
-	}
+	if (philo->id % 2 != 0)
+		usleep(500);
 	while (!someone_is_dead(philo) && !ate_too_much(philo))
 	{
 		eating(philo);
@@ -74,11 +71,12 @@ void	ft_usleep(t_philo *philo, int time)
 	int	begin;
 
 	begin = philo_time();
+	(void)philo;
 	while (philo_time() - begin < time)
 	{
-		if (someone_is_dead(philo) || ate_too_much(philo))
-			return ;
-		usleep(100);
+		/* if (someone_is_dead(philo) || ate_too_much(philo))
+			return ; */
+		usleep(150);
 	}
 }
 
@@ -107,18 +105,20 @@ void	monitor_philos(t_data *data)
 				pthread_mutex_unlock(&data->philo[i].data->eating);
 				return ;
 			}
+			pthread_mutex_unlock(&data->philo[i].data->eating);
+			pthread_mutex_lock(&data->philo[i].data->eating);
 			if (philo_time() - data->philo[i].last_meal > data->time_to_die)
 			{
+				pthread_mutex_lock(&data->philo[i].data->dying);
 				message(*data, DIED, philo_time() - data->begin_time,
 					data->philo[i].id);
-				pthread_mutex_lock(&data->philo[i].data->dying);
 				data->dead = true;
 				pthread_mutex_unlock(&data->philo[i].data->dying);
 				pthread_mutex_unlock(&data->philo[i].data->eating);
 				return ;
 			}
 			pthread_mutex_unlock(&data->philo[i].data->eating);
-			usleep(150);
+			usleep(300);
 			i++;
 		}
 	}
