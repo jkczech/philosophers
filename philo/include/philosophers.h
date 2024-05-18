@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 13:19:04 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/17 23:39:14 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/18 17:33:16 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,6 @@ void	thinking(t_philo *philo);
 
 //time.c
 int		philo_time(void);
-void	ft_usleep(t_philo *philo, int time);
+void	ft_usleep(int time);
 int		time_shift(t_philo *philo);
 #endif

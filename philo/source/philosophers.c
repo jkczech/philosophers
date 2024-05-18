@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 21:21:40 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/17 23:38:14 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/18 18:10:59 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	*routine(void *philo_pass)
 	philo = (t_philo *)philo_pass;
 	if (philo->data->num_of_philo == 1)
 		return (lonely_philo(philo));
-	if (philo->id % 2 != 0)
-		usleep(500);
+	if (philo->id % 2 == 0)
+		usleep(150);
 	while (!someone_is_dead(philo))
 	{
 		eating(philo);
@@ -62,7 +62,7 @@ void	*lonely_philo(t_philo *philo)
 	pthread_mutex_lock(philo->left_fork);
 	message(philo, FORK, philo_time() - philo->data->begin_time);
 	pthread_mutex_unlock(philo->left_fork);
-	ft_usleep(philo, philo->data->time_to_die);
+	ft_usleep(philo->data->time_to_die);
 	return (NULL);
 }
 

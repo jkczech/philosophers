@@ -6,7 +6,7 @@
 /*   By: jkoupy <jkoupy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 23:32:29 by jkoupy            #+#    #+#             */
-/*   Updated: 2024/05/17 23:33:45 by jkoupy           ###   ########.fr       */
+/*   Updated: 2024/05/18 17:33:23 by jkoupy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@ int	philo_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	ft_usleep(t_philo *philo, int time)
+void	ft_usleep(int time)
 {
 	int	begin;
 
 	begin = philo_time();
-	(void)philo;
 	while (philo_time() - begin < time)
 	{
 		usleep(150);
@@ -41,13 +40,13 @@ int	time_shift(t_philo *philo)
 		if (philo->data->time_to_eat >= philo->data->time_to_sleep)
 		{
 			result = philo->data->time_to_eat - philo->data->time_to_sleep;
-			ft_usleep(philo, result);
+			ft_usleep(result);
 			usleep(500);
 		}
 		else if (philo->data->time_to_sleep > philo->data->time_to_eat)
 		{
 			result = philo->data->time_to_sleep - philo->data->time_to_eat;
-			ft_usleep(philo, result);
+			ft_usleep(result);
 			usleep(500);
 		}
 	}
